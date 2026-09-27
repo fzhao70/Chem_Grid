@@ -1,4 +1,25 @@
-# Chem_Grid
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
+  <img alt="Chem_Grid" src="assets/banner-light.svg" width="860">
+</picture>
+
+<p>
+  <a href="LICENSE"><img alt="license: MPL 2.0" src="https://img.shields.io/badge/license-MPL%202.0-6366F1?style=flat-square"></a>
+  <img alt="python: 3.11+" src="https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white">
+  <img alt="works with: JAX jit + grad" src="https://img.shields.io/badge/works%20with-JAX%20jit%20%2B%20grad-0EA5E9?style=flat-square">
+  <img alt="used by: SMVGEAR · MINT · DepConv" src="https://img.shields.io/badge/used%20by-SMVGEAR%20·%20MINT%20·%20DepConv-9333EA?style=flat-square">
+</p>
+
+<p>
+  <a href="#-whats-inside"><b>What's inside</b></a> ·
+  <a href="#-regridding"><b>Regridding</b></a> ·
+  <a href="#-tests"><b>Tests</b></a>
+</p>
+
+</div>
 
 `chem_grid` is the small shared package every JAX chemistry package in this
 repository depends on for grid geometry. It holds only what all of them agree
@@ -7,6 +28,8 @@ on; anything a single operator needs stays in that operator's own package.
 Used by [MINT](https://github.com/fzhao70/MINT) (`mint.Grid` is `chem_grid.Grid`;
 `topk` is a `mint.mint` argument), Chem_DepConv (vertical-order helpers) and
 [SMVGEAR](https://github.com/fzhao70/SMVGEAR) (`ChemistryOperator(grid=...)`).
+
+## 🧩 What's inside
 
 | Name | What it is |
 |---|---|
@@ -22,7 +45,7 @@ Not in `Grid`, on purpose: transport's `topk` and `g_p2m` (transport
 options), and geometry that has to be a traced array, such as the map-scale
 factor, sigma levels and `ptop`.
 
-## Regridding
+## 🌐 Regridding
 
 ```python
 from chem_grid.regrid import conservative_weights, bilinear_weights, cell_areas
@@ -51,7 +74,7 @@ flux_model = w(flux_inventory)   # (nlon, nlat, ...) -> (nx, ny, ...), JAX, jit/
 Building conservative weights for a 169x113 curvilinear grid from a 0.1°
 inventory takes about 3 s; bilinear takes a few milliseconds.
 
-## Tests
+## 🧪 Tests
 
 ```bash
 JAX_PLATFORMS=cpu python -m pytest -q     # 89 tests, ~15 s
@@ -59,6 +82,27 @@ JAX_PLATFORMS=cpu python -m pytest -q     # 89 tests, ~15 s
 
 `tests/test_vertical.py` is ported from Chem_DepConv's `tests/test_grid.py`.
 
-## License
+## 🔗 Part of the JaxREAM family
+
+`chem_grid` is one of the standalone libraries that [JaxREAM](https://github.com/fzhao70/JaxREAM) couples into a full regional chemical transport model. Each library works on its own, with arrays in and arrays out.
+
+<table><tr>
+<td align="center" width="96"><a href="https://github.com/fzhao70/JaxREAM"><img src="assets/modules/jaxream.svg" width="40" alt="jaxream"><br><b>jaxream</b></a><br>coupler</td>
+<td align="center" width="96"><a href="https://github.com/fzhao70/SMVGEAR"><img src="assets/modules/smvgear.svg" width="40" alt="smvgear"><br><b>smvgear</b></a><br>chemistry</td>
+<td align="center" width="96"><a href="https://github.com/fzhao70/MINT"><img src="assets/modules/mint.svg" width="40" alt="mint"><br><b>mint</b></a><br>transport</td>
+<td align="center" width="96"><a href="https://github.com/fzhao70/DepConv"><img src="assets/modules/depconv.svg" width="40" alt="depconv"><br><b>depconv</b></a><br>deposition</td>
+<td align="center" width="96"><a href="https://github.com/fzhao70/FastJ"><img src="assets/modules/fastj.svg" width="40" alt="fastj"><br><b>fastj</b></a><br>photolysis</td>
+<td align="center" width="96"><a href="https://github.com/fzhao70/EMIS_GEOS"><img src="assets/modules/emis_geos.svg" width="40" alt="emis_geos"><br><b>emis_geos</b></a><br>emissions</td>
+<td align="center" width="96"><a href="https://github.com/fzhao70/Chem_Grid"><img src="assets/modules/chem_grid.svg" width="40" alt="chem_grid"><br><b>chem_grid</b></a><br><i>this repo</i></td>
+</tr></table>
+
+## 📄 License
 
 Mozilla Public License 2.0; see [LICENSE](LICENSE).
+
+<div align="center">
+<br>
+<a href="https://github.com/fzhao70/JaxREAM"><img src="assets/logo.svg" width="56" alt="chem_grid in the JaxREAM family"></a>
+<br>
+<sub>Part of the <a href="https://github.com/fzhao70/JaxREAM">JaxREAM</a> family of modular JAX atmospheric-chemistry libraries</sub>
+</div>
