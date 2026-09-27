@@ -15,6 +15,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeVar
 
+import numpy as np
+
 from chem_grid.grid import Grid
 
 __all__ = ["Crop"]
@@ -52,10 +54,40 @@ class Crop:
             raise ValueError(f"{self} leaves no cells in a {nx_full}x{ny_full} grid")
         return nx, ny
 
-    def grid(self, nx_full: int, ny_full: int, nz: int, dx: float) -> Grid:
-        """The model :class:`~chem_grid.Grid` REAM builds from a full met grid."""
+    def grid(
+        self,
+        nx_full: int,
+        ny_full: int,
+        nz: int,
+        dx: float,
+        *,
+        lon=None,
+        lat=None,
+        lon_edges=None,
+        lat_edges=None,
+        projection=None,
+    ) -> Grid:
+        """The model :class:`~chem_grid.Grid` REAM builds from a full met grid.
+
+        The optional coordinates are the **full** met grid's --
+        ``(nx_full, ny_full)`` centres, ``(nx_full+1, ny_full+1)`` corners --
+        and are cropped with the same widths, so the corners still bound the
+        cropped cells. A *projection* describes the full grid (``cen`` at its
+        centre); an asymmetric crop moves the centre, so the returned grid's
+        projection has ``cen_lat``/``cen_lon`` recomputed for the cropped grid.
+        """
         nx, ny = self.shape(nx_full, ny_full)
-        return Grid(nx=nx, ny=ny, nz=nz, dx=dx)
+        coords = {"lon": lon, "lat": lat, "lon_edges": lon_edges, "lat_edges": lat_edges}
+        for name, full in (("lon", (nx_full, ny_full)), ("lon_edges", (nx_full + 1, ny_full + 1))):
+            for n in (name, name.replace("lon", "lat")):
+                if coords[n] is not None and np.shape(coords[n]) != full:
+                    raise ValueError(f"{n} must have the full grid's shape {full}, got {np.shape(coords[n])}")
+        coords = {n: None if a is None else self.apply(np.asarray(a)) for n, a in coords.items()}
+        if projection is not None:
+            projection = projection.shifted(
+                (self.ixb - self.ixbe) / 2.0, (self.jxb - self.jxbe) / 2.0, dx
+            )
+        return Grid(nx=nx, ny=ny, nz=nz, dx=dx, projection=projection, **coords)
 
     def apply(self, a: ArrayT) -> ArrayT:
         """Crop *a*'s first two axes (``x``, ``y``).

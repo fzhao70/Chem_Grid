@@ -102,3 +102,104 @@ def test_crop_rejects_overcrop():
         Crop(ixb=3, ixbe=3).shape(6, 10)
     with pytest.raises(ValueError):
         Crop(jxb=5, jxbe=5).apply(np.zeros((4, 10)))
+
+
+# ---------------------------------------------------------------------------
+# Grid: optional coordinates
+# ---------------------------------------------------------------------------
+
+
+def _coords(nx=4, ny=3):
+    i, j = np.meshgrid(np.arange(nx + 1.0), np.arange(ny + 1.0), indexing="ij")
+    lon_e, lat_e = 100.0 + 0.5 * i + 0.1 * j, 20.0 + 0.4 * j
+    lon_c = 0.25 * (lon_e[:-1, :-1] + lon_e[1:, :-1] + lon_e[1:, 1:] + lon_e[:-1, 1:])
+    lat_c = 0.25 * (lat_e[:-1, :-1] + lat_e[1:, :-1] + lat_e[1:, 1:] + lat_e[:-1, 1:])
+    return lon_c, lat_c, lon_e, lat_e
+
+
+def test_grid_coords_default_to_none():
+    g = Grid(nx=4, ny=3, nz=2, dx=1.0)
+    assert g.lon is None and g.lat is None and g.lon_edges is None and g.lat_edges is None
+    assert not g.has_centers and not g.has_edges
+
+
+def test_grid_stores_assigned_coords_as_readonly_copies():
+    lon, lat, lon_e, lat_e = _coords()
+    g = Grid(nx=4, ny=3, nz=2, dx=1.0, lon=lon, lat=lat, lon_edges=lon_e, lat_edges=lat_e)
+    assert g.has_centers and g.has_edges
+    np.testing.assert_array_equal(g.lon_edges, lon_e)
+    lon[0, 0] = -999.0  # caller's array changes; the grid's copy does not
+    assert g.lon[0, 0] != -999.0
+    with pytest.raises(ValueError):
+        g.lat[0, 0] = 0.0
+
+
+def test_grid_centers_and_edges_are_independent():
+    lon, lat, lon_e, lat_e = _coords()
+    assert Grid(nx=4, ny=3, nz=2, dx=1.0, lon=lon, lat=lat).has_edges is False
+    assert Grid(nx=4, ny=3, nz=2, dx=1.0, lon_edges=lon_e, lat_edges=lat_e).has_centers is False
+
+
+@pytest.mark.parametrize(
+    "kw",
+    [
+        {"lon": np.zeros((4, 3))},  # lon without lat
+        {"lat_edges": np.zeros((5, 4))},  # lat_edges without lon_edges
+        {"lon": np.zeros((3, 4)), "lat": np.zeros((3, 4))},  # transposed
+        {"lon_edges": np.zeros((4, 3)), "lat_edges": np.zeros((4, 3))},  # centre-shaped edges
+        {"lon": np.zeros((4, 3)), "lat": np.full((4, 3), 91.0)},  # latitude out of range
+        {"lon": np.full((4, 3), np.nan), "lat": np.zeros((4, 3))},  # non-finite
+    ],
+)
+def test_grid_rejects_bad_coords(kw):
+    with pytest.raises(ValueError):
+        Grid(nx=4, ny=3, nz=2, dx=1.0, **kw)
+
+
+def test_grid_equality_and_hash_include_coords():
+    lon, lat, _, _ = _coords()
+    a = Grid(nx=4, ny=3, nz=2, dx=1.0, lon=lon, lat=lat)
+    b = Grid(nx=4, ny=3, nz=2, dx=1.0, lon=lon.copy(), lat=lat.copy())
+    c = Grid(nx=4, ny=3, nz=2, dx=1.0, lon=lon + 1.0, lat=lat)
+    bare = Grid(nx=4, ny=3, nz=2, dx=1.0)
+    assert a == b and hash(a) == hash(b)
+    assert a != c and a != bare
+    assert len({a, b, c, bare}) == 3
+
+
+def test_grid_with_coords_is_static_jit_argument():
+    lon, lat, _, _ = _coords()
+    g = Grid(nx=4, ny=3, nz=1, dx=1.0, lon=lon, lat=lat)
+    f = jax.jit(lambda x, grid: x.reshape(grid.horizontal_shape) + grid.lat, static_argnums=1)
+    np.testing.assert_allclose(np.asarray(f(jnp.zeros(12), g)), lat)
+
+
+def test_grid_repr_mentions_coords_not_values():
+    lon, lat, _, _ = _coords()
+    r = repr(Grid(nx=4, ny=3, nz=2, dx=1.0, lon=lon, lat=lat))
+    assert r == "Grid(nx=4, ny=3, nz=2, dx=1.0, coords=lon)"
+
+
+def test_crop_grid_crops_coords():
+    lon, lat, lon_e, lat_e = _coords(nx=10, ny=8)
+    crop = Crop(ixb=2, ixbe=1, jxb=1, jxbe=3)
+    g = crop.grid(10, 8, nz=5, dx=1.0, lon=lon, lat=lat, lon_edges=lon_e, lat_edges=lat_e)
+    assert g.horizontal_shape == (7, 4)
+    np.testing.assert_array_equal(g.lon, lon[2:9, 1:5])
+    np.testing.assert_array_equal(g.lat_edges, lat_e[2:10, 1:6])  # (nx+1, ny+1)
+
+
+def test_crop_grid_rejects_precropped_coords():
+    lon, lat, _, _ = _coords(nx=10, ny=8)
+    with pytest.raises(ValueError):
+        Crop(ixb=1, ixbe=1).grid(10, 8, nz=5, dx=1.0, lon=lon[1:9], lat=lat[1:9])
+
+
+def test_grid_edges_feed_conservative_regrid():
+    from chem_grid.regrid import conservative_weights
+
+    _, _, lon_e, lat_e = _coords()
+    g = Grid(nx=4, ny=3, nz=1, dx=1.0, lon_edges=lon_e, lat_edges=lat_e)
+    w = conservative_weights(np.arange(99.0, 104.01, 0.25), np.arange(19.0, 23.01, 0.25),
+                             g.lon_edges, g.lat_edges)
+    assert w.dst_shape == g.horizontal_shape
