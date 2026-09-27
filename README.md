@@ -4,6 +4,10 @@
 repository depends on for grid geometry. It holds only what all of them agree
 on; anything a single operator needs stays in that operator's own package.
 
+Used by [MINT](https://github.com/fzhao70/MINT) (`mint.Grid` is `chem_grid.Grid`;
+`topk` is a `mint.mint` argument), Chem_DepConv (vertical-order helpers) and
+[SMVGEAR](https://github.com/fzhao70/SMVGEAR) (`ChemistryOperator(grid=...)`).
+
 | Name | What it is |
 |---|---|
 | `Grid(nx, ny, nz, dx)` | Static domain dimensions and REAM's scalar grid spacing. Frozen and hashable, so it works as a `jax.jit` static argument. Arrays are laid out `(nx, ny, nz, ...)`, x first. |
