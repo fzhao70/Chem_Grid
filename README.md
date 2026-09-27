@@ -51,3 +51,7 @@ JAX_PLATFORMS=cpu python -m pytest -q     # 57 tests, ~15 s
 ```
 
 `tests/test_vertical.py` is ported from Chem_DepConv's `tests/test_grid.py`.
+
+## License
+
+Mozilla Public License 2.0; see [LICENSE](LICENSE).

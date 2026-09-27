@@ -8,11 +8,13 @@ version = "0.1.0"
 description = "Shared grid geometry, vertical-order convention, cropping and regridding for the JAX chemistry packages"
 readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MPL-2.0" }
 authors = [{ name = "Chem_Grid Development Team" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
