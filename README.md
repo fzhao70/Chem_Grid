@@ -113,6 +113,6 @@ Mozilla Public License 2.0; see [LICENSE](LICENSE).
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/uwyo_logo_dark.svg">
-  <img src="assets/uwyo_logo.svg" height="60" align="middle" alt="University of Wyoming">
+  <img src="assets/uwyo_logo.svg" height="100" align="middle" alt="University of Wyoming">
 </picture>
 </div>
