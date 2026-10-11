@@ -33,8 +33,8 @@ LIBS = {
     },
     "smvgear": {
         "word": "SMVGEAR",
-        "tagline": "Differentiable SMVGEAR II chemistry solver in JAX",
-        "keys": ["Gear BDF", "sparse LU", "REAM, MCM, GEOS-Chem", "jit and grad"],
+        "tagline": "Differentiable Gear and Rosenbrock chemistry solvers in JAX",
+        "keys": ["Gear BDF", "ROS3, RODAS3", "sparse LU", "REAM, MCM, GEOS-Chem", "jit, grad"],
     },
     "mint": {
         "word": "MINT",

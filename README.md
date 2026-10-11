@@ -109,7 +109,10 @@ Mozilla Public License 2.0; see [LICENSE](LICENSE).
 
 <div align="center">
 <br>
-<img src="assets/figure03_bg.png" width="120" alt="Atmospheric Chemistry, Wang Group, Georgia Tech">
-<br>
-<sub>Atmospheric Chemistry · Wang Group · Georgia Tech</sub>
+<img src="assets/figure03_bg.png" height="110" align="middle" alt="Atmospheric Chemistry, Wang Group">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/uwyo_logo_dark.svg">
+  <img src="assets/uwyo_logo.svg" height="60" align="middle" alt="University of Wyoming">
+</picture>
 </div>
