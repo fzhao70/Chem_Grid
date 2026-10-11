@@ -7,10 +7,10 @@
 </picture>
 
 <p>
-  <a href="LICENSE"><img alt="license: MPL 2.0" src="https://img.shields.io/badge/license-MPL%202.0-1F3A5F?style=flat-square"></a>
-  <img alt="python: 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1F3A5F?style=flat-square&logo=python&logoColor=white">
-  <img alt="works with: JAX jit + grad" src="https://img.shields.io/badge/works%20with-JAX%20jit%20%2B%20grad-1F3A5F?style=flat-square">
-  <img alt="used by: SMVGEAR · MINT · DepConv" src="https://img.shields.io/badge/used%20by-SMVGEAR%20·%20MINT%20·%20DepConv-1F3A5F?style=flat-square">
+  <a href="LICENSE"><img alt="license: MPL 2.0" src="https://img.shields.io/badge/license-MPL%202.0-blue"></a>
+  <img alt="python: 3.11+" src="https://img.shields.io/badge/python-3.11%2B-blue?logo=python&logoColor=white">
+  <img alt="works with: JAX jit + grad" src="https://img.shields.io/badge/works%20with-JAX%20jit%20%2B%20grad-blue">
+  <img alt="used by: SMVGEAR · MINT · DepConv" src="https://img.shields.io/badge/used%20by-SMVGEAR%20·%20MINT%20·%20DepConv-blue">
 </p>
 
 <p>
