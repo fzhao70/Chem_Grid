@@ -7,16 +7,16 @@
 </picture>
 
 <p>
-  <a href="LICENSE"><img alt="license: MPL 2.0" src="https://img.shields.io/badge/license-MPL%202.0-6366F1?style=flat-square"></a>
-  <img alt="python: 3.11+" src="https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white">
-  <img alt="works with: JAX jit + grad" src="https://img.shields.io/badge/works%20with-JAX%20jit%20%2B%20grad-0EA5E9?style=flat-square">
-  <img alt="used by: SMVGEAR · MINT · DepConv" src="https://img.shields.io/badge/used%20by-SMVGEAR%20·%20MINT%20·%20DepConv-9333EA?style=flat-square">
+  <a href="LICENSE"><img alt="license: MPL 2.0" src="https://img.shields.io/badge/license-MPL%202.0-1F3A5F?style=flat-square"></a>
+  <img alt="python: 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1F3A5F?style=flat-square&logo=python&logoColor=white">
+  <img alt="works with: JAX jit + grad" src="https://img.shields.io/badge/works%20with-JAX%20jit%20%2B%20grad-1F3A5F?style=flat-square">
+  <img alt="used by: SMVGEAR · MINT · DepConv" src="https://img.shields.io/badge/used%20by-SMVGEAR%20·%20MINT%20·%20DepConv-1F3A5F?style=flat-square">
 </p>
 
 <p>
-  <a href="#-whats-inside"><b>What's inside</b></a> ·
-  <a href="#-regridding"><b>Regridding</b></a> ·
-  <a href="#-tests"><b>Tests</b></a>
+  <a href="#whats-inside"><b>What's inside</b></a> ·
+  <a href="#regridding"><b>Regridding</b></a> ·
+  <a href="#tests"><b>Tests</b></a>
 </p>
 
 </div>
@@ -29,7 +29,7 @@ Used by [MINT](https://github.com/fzhao70/MINT) (`mint.Grid` is `chem_grid.Grid`
 `topk` is a `mint.mint` argument), Chem_DepConv (vertical-order helpers) and
 [SMVGEAR](https://github.com/fzhao70/SMVGEAR) (`ChemistryOperator(grid=...)`).
 
-## 🧩 What's inside
+## What's inside
 
 | Name | What it is |
 |---|---|
@@ -45,7 +45,7 @@ Not in `Grid`, on purpose: transport's `topk` and `g_p2m` (transport
 options), and geometry that has to be a traced array, such as the map-scale
 factor, sigma levels and `ptop`.
 
-## 🌐 Regridding
+## Regridding
 
 ```python
 from chem_grid.regrid import conservative_weights, bilinear_weights, cell_areas
@@ -74,7 +74,7 @@ flux_model = w(flux_inventory)   # (nlon, nlat, ...) -> (nx, ny, ...), JAX, jit/
 Building conservative weights for a 169x113 curvilinear grid from a 0.1°
 inventory takes about 3 s; bilinear takes a few milliseconds.
 
-## 🧪 Tests
+## Tests
 
 ```bash
 JAX_PLATFORMS=cpu python -m pytest -q     # 89 tests, ~15 s
@@ -82,7 +82,7 @@ JAX_PLATFORMS=cpu python -m pytest -q     # 89 tests, ~15 s
 
 `tests/test_vertical.py` is ported from Chem_DepConv's `tests/test_grid.py`.
 
-## 🔗 Part of the JaxREAM family
+## Part of the JaxREAM family
 
 `chem_grid` is one of the standalone libraries that [JaxREAM](https://github.com/fzhao70/JaxREAM) couples into a full regional chemical transport model. Each library works on its own, with arrays in and arrays out.
 
@@ -96,7 +96,7 @@ JAX_PLATFORMS=cpu python -m pytest -q     # 89 tests, ~15 s
 <td align="center" width="96"><a href="https://github.com/fzhao70/Chem_Grid"><img src="assets/modules/chem_grid.svg" width="40" alt="chem_grid"><br><b>chem_grid</b></a><br><i>this repo</i></td>
 </tr></table>
 
-## 📄 License
+## License
 
 Mozilla Public License 2.0; see [LICENSE](LICENSE).
 
@@ -105,4 +105,11 @@ Mozilla Public License 2.0; see [LICENSE](LICENSE).
 <a href="https://github.com/fzhao70/JaxREAM"><img src="assets/logo.svg" width="56" alt="chem_grid in the JaxREAM family"></a>
 <br>
 <sub>Part of the <a href="https://github.com/fzhao70/JaxREAM">JaxREAM</a> family of modular JAX atmospheric-chemistry libraries</sub>
+</div>
+
+<div align="center">
+<br>
+<img src="assets/figure03_bg.png" width="120" alt="Atmospheric Chemistry, Wang Group, Georgia Tech">
+<br>
+<sub>Atmospheric Chemistry · Wang Group · Georgia Tech</sub>
 </div>
